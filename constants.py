@@ -17,4 +17,3 @@ BOOK_DETECTIVE = 'Шерлок Холмс'
 GENRE_DETECTIVE = 'Детективы'
 
 BOOK_NOT_IN_DICT = 'Не избранная книга'
-BOOK_IN_DICT = 'Избранная книга'
