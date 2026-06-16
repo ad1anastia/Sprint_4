@@ -31,19 +31,18 @@ class TestBooksCollector:
         collector.add_new_book(c.BOOK_DETECTIVE)
         assert len(collector.get_books_genre()) == 2
 
-    # Повторное добавление книги не создает дубликат в словаре 
-    def test_add_new_book_add_duplicate_book(self, collector): 
+    # Повторное добавление книги не создает дубликат в словаре
+    def test_add_new_book_add_duplicate_book(self, collector):
         collector.add_new_book(c.BOOK_ANIMATION_FILMS)
         collector.add_new_book(c.BOOK_ANIMATION_FILMS)
-        assert len(collector.get_books_genre()) == 1 
+        assert len(collector.get_books_genre()) == 1
 
     # === set_book_genre ===
     
     # Соществующей книге успешно присваивается жанр
-    def test_set_book_genre_add_genre_book(self, collector):
-        collector.add_new_book(c.BOOK_ANIMATION_FILMS)
-        collector.set_book_genre(c.BOOK_ANIMATION_FILMS, c.GENRE_ANIMATED_FILM)
-        assert collector.get_book_genre(c.BOOK_ANIMATION_FILMS) == c.GENRE_ANIMATED_FILM
+    def test_set_book_genre_existing_book_genre_is_set(self, collector_with_book):
+        collector_with_book.set_book_genre(c.BOOK_ANIMATION_FILMS, c.GENRE_ANIMATED_FILM)
+        assert collector_with_book.get_book_genre(c.BOOK_ANIMATION_FILMS) == c.GENRE_ANIMATED_FILM
 
     # Несуществующий жанр не перезаписываети текущий жанр книги
     def test_set_book_genre_not_set(self, collector_book_with_genre):
@@ -60,6 +59,17 @@ class TestBooksCollector:
     def test_get_book_genre_after_adding_book_list_not_empty(self, collector_book_with_genre):
         assert collector_book_with_genre.get_book_genre(c.BOOK_ANIMATION_FILMS)
  
+    # === get_books_genre ===
+
+    # Метод возвращает словарь с добавленными книгами
+    def test_get_books_genre_returns_dict_with_added_books(self, collector_with_two_books):
+        books_genre = collector_with_two_books.get_books_genre()
+        assert c.BOOK_ANIMATION_FILMS in books_genre and c.BOOK_DETECTIVE in books_genre
+
+    # Метод возвращает пустой словарь, если книги не добавлялись
+    def test_get_books_genre_returns_empty_dict_when_no_books(self, collector):
+        assert collector.get_books_genre() == {}
+
     # === get_books_with_specific_genre ===
 
     # Для каждого жанра должена вернуться книга этого же жанра
@@ -115,7 +125,7 @@ class TestBooksCollector:
  
     # === delete_book_from_favorites ===
 
-    # Книга успешно удалилась из избранного и больше не отображается в списке 
+    # Книга успешно удалилась из избранного и больше не отображается в списке
     def test_delete_book_from_favoritesbook_removed(self, collector_with_favorite):
         collector_with_favorite.delete_book_from_favorites(c.BOOK_ANIMATION_FILMS)
         assert c.BOOK_ANIMATION_FILMS not in collector_with_favorite.get_list_of_favorites_books()

@@ -7,7 +7,18 @@ def collector():
     return BooksCollector()
 
 @pytest.fixture
-def collector_book_with_genre( collector):
+def collector_with_book(collector):
+    collector.add_new_book(c.BOOK_ANIMATION_FILMS)
+    return collector
+
+@pytest.fixture
+def collector_with_two_books(collector):
+    collector.add_new_book(c.BOOK_ANIMATION_FILMS)
+    collector.add_new_book(c.BOOK_DETECTIVE)
+    return collector
+
+@pytest.fixture
+def collector_book_with_genre(collector):
     collector.add_new_book(c.BOOK_ANIMATION_FILMS)
     collector.set_book_genre(c.BOOK_ANIMATION_FILMS, c.GENRE_ANIMATED_FILM)
     return collector
